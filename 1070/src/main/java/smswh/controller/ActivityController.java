@@ -59,5 +59,4 @@ public class ActivityController {
 
         return "리다이렉트 url";
     }
-    // 매일 0시에 날짜 지난 활동의 status 바꾸기...?
 }

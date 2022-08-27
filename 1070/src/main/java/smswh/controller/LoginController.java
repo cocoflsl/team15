@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import smswh.account.config.LoginForm;
+import smswh.web.ScriptUtils;
 import smswh.web.SessionConst;
 import smswh.domain.Member;
 import smswh.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @Controller
@@ -29,7 +32,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         if(bindingResult.hasErrors())   return "login/loginForm";
         Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
@@ -37,6 +40,7 @@ public class LoginController {
 
         if(loginMember == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            ScriptUtils.alertAndBackPage(response, "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login/loginForm";
         }
 

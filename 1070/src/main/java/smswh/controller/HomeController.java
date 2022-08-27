@@ -20,7 +20,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String homeLogin(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
-        // 세션 존재 && 세션에 회원 데이터 존재 해야만 loginMember != null
         if(loginMember == null) {
             return "home";
         }

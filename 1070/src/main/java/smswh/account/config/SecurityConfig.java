@@ -1,9 +1,6 @@
 package smswh.account.config;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,7 +16,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasRole("ADMIN")
+                .antMatchers("/user").hasRole("USER")
                 .and() // 추가
                 .formLogin() // form 기반 로그인인 경우
                 .loginPage("/") // 로그인 필요한 URL 접근시 /로 이동
@@ -32,18 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied");
-
-
-        http.formLogin();
-        http.httpBasic();
-
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        String password = passwordEncoder().encode("1234");
-
-        auth.inMemoryAuthentication().withUser("user").password(password).roles("USER");
 
     }
 }
